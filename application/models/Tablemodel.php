@@ -16,4 +16,10 @@ class Tablemodel extends CI_Model
     $query = $this->db->get('orang');
     return $query->result_array();
   }
+
+  public function hapus($id)
+  {
+    return $this->db->delete('orang',array('id' => $id));
+    return true;
+  }
 }
