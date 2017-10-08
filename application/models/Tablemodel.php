@@ -19,7 +19,7 @@ class Tablemodel extends CI_Model
 
   public function hapus($id)
   {
-    return $this->db->delete('orang',array('id' => $id));
+    $this->db->delete('orang', array('id' => $id));
     return true;
   }
 }

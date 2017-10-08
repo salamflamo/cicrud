@@ -16,13 +16,13 @@ class Table extends CI_Controller {
 		$this->load->view('panel/table',$data);
 	}
 
-	public function delete($id)
+	public function delete()
 	{
-		if ($this->tablemodel->delete($id) == true) {
+		$id = $this->input->post('id');
+		if ($this->tablemodel->hapus($id) == true) {
 			return redirect('table');
 		} else {
-			echo "Gagal";
-			redirect('table');
+			
 		}
 	}
 

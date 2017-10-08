@@ -9,17 +9,29 @@ class Form extends CI_Controller {
     $this->load->model('formmodel');
   }
 
-	public function index()
+	public function index($param = 'tidak')
 	{
-		$this->load->view('panel/form');
+    $kondisi['input'] = $param;
+    $this->load->view('panel/form-head');
+		$this->load->view('panel/form',$kondisi);
+    $this->load->view('panel/form-footer');
 	}
 
   public function tambah()
   {
     if ($this->formmodel->tambah() == true) {
-      redirect('table');
+      redirect('form/berhasil');
     } else {
       echo "Maaf terjadi kesalahan";
     }
+  }
+
+  public function edit()
+  {
+    $kondisi['orang'] = $this->formmodel->edit();
+    $kondisi['input'] = 'yes';
+    $this->load->view('panel/form-head');
+		$this->load->view('panel/form-edit',$kondisi);
+    $this->load->view('panel/form-footer');
   }
 }

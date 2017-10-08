@@ -23,8 +23,21 @@ class Formmodel extends CI_Model
       'kabkot'    => $this->input->post('kabkot'),
       'catatan'   => $this->input->post('catatan'),
     );
-    $this->db->insert('orang',$data);
-    return true;
+    $id = $this->input->post('id');
+    if (isset($id)) {
+      $this->db->where('id',$id);
+      $this->db->update('orang',$data);
+      return true;
+    } else {
+      $this->db->insert('orang',$data);
+      return true;
+    }
+  }
+
+  public function edit()
+  {
+    $id = $this->input->post('id');
+    return $this->db->get_where('orang', array('id' => $id))->row_array();
   }
 
 
