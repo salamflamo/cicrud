@@ -9,6 +9,7 @@ class Tablemodel extends CI_Model
   function __construct()
   {
     $this->load->database();
+    $this->load->library('session');
   }
 
   public function tampil()
@@ -22,4 +23,6 @@ class Tablemodel extends CI_Model
     $this->db->delete('orang', array('id' => $id));
     return true;
   }
+
+  // ini untuk mencoba ajax
 }
