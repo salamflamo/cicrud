@@ -13,6 +13,7 @@ class Orang_ajax_m extends CI_Model
 
   public function ambilorang()
   {
+    $this->db->order_by('id','desc');
     $q = $this->db->get('orang');
     if ($q->num_rows() > 0) {
       return $q->result();

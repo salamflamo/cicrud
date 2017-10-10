@@ -28,7 +28,7 @@
                                                     <button type="button" class="btn btn-default" onclick="reload_table()" >Reload</button> -->
 
                                                     <button type="button" class="btn btn-success" id="btnTambah" >Tambah</button>
-                                                    
+
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -251,7 +251,7 @@
                   var i;
                   for (var i = 0; i < data.length; i++) {
                     html += '<tr>'+
-                              '<td>'+data[i].nik+'</td>'+
+                              '<td><a href="javascript:;" class="item-detail" data="'+data[i].id+'">'+data[i].nik+'</a></td>'+
                               '<td>'+data[i].nama+'</td>'+
                               '<td>'+data[i].phone+'</td>'+
                               '<td>'+data[i].gender+'</td>'+
@@ -276,6 +276,35 @@
               $('#form')[0].reset();
             });
 
+            //ini bagian untuk menampilkan detail data
+            $('#tampildata').on('click','.item-detail',function() {
+              var id = $(this).attr('data');
+              $.ajax({
+                type: 'ajax',
+                method: 'get',
+                url: '<?= base_url(); ?>orang_ajax/editorang',
+                data: {id:id},
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                  $('#modal_detail').modal('show');
+                  $('#nik').html(data.nik);
+                  $('#nama').html(data.nama);
+                  $('#phone').html(data.phone);
+                  var g = data.gender;
+                  if (g == "L") {
+                    $('#gender').html("Laki-laki");
+                  } else {
+                    $('#gender').html("Perempuan");
+                  }
+                  $('#alamat').html(data.alamat);
+                  $('#kecamatan').html(data.kecamatan);
+                  $('#kabkot').html(data.kabkot);
+                  $('#catatan').html(data.catatan);
+                },
+              });
+            });
+
           });
         </script>
 
@@ -294,6 +323,68 @@
               <div class="modal-footer">
                 <button type="button" id="btnHapus" class="btn btn-danger">Hapus</button>
                 <button type="reset"  class="btn btn-primary" data-dismiss="modal">Batal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="modal_detail" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">Detail Orang</h3>
+              </div>
+              <div class="modal-body">
+
+                <table class="table table-responsive">
+                  <tr>
+                    <td>NIK</td>
+                    <td>:</td>
+                    <td><h4 id="nik"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Nama</td>
+                    <td>:</td>
+                    <td><h4 id="nama"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>:</td>
+                    <td><h4 id="phone"></h4></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Gender</td>
+                    <td>:</td>
+                    <td><h4 id="gender"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Alamat</td>
+                    <td>:</td>
+                    <td><h4 id="alamat"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Kecamatan</td>
+                    <td>:</td>
+                    <td><h4 id="kecamatan"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Kab./Kota</td>
+                    <td>:</td>
+                    <td><h4 id="kabkot"></h4></td>
+                  </tr>
+                  <tr>
+                    <td>Catatan</td>
+                    <td>:</td>
+                    <td><h4 id="catatan"></h4></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="reset"  class="btn btn-default" data-dismiss="modal">Keluar</button>
               </div>
             </div>
           </div>
