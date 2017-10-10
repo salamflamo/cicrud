@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $route['delete'] = 'table/delete';
 
 $route['default_controller'] = 'orang_ajax';
+$route['ver2'] = 'orang_ajax_d';
 
 // ini bukan
 $route['404_override'] = '';
