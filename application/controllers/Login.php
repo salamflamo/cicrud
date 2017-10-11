@@ -44,7 +44,7 @@ class Login extends CI_Controller
       $_SESSION['username'] = $q->username;
       $p = $this->encrypt->decode($q->password);
       if ($pp == $p) {
-        redirect(base_url('ver2'));
+        redirect(base_url('ver1'));
       } else {
         redirect('login');
       }
