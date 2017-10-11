@@ -33,7 +33,7 @@ class Orang_ajax_d extends CI_Controller {
 
 
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_orang('.$value->id.')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>'.
-								'<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="delete_orang('.$value->id.')"><i class="glyphicon glyphicon-trash"></i> Hapus</a>';
+								'<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Edit" onclick="delete_orang('.$value->id.')"><i class="glyphicon glyphicon-trash"></i> Hapus</a>';
 			$data[] = $row;
 		}
 

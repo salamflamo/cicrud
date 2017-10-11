@@ -130,8 +130,6 @@
       <div class="modal-footer">
         <button type="button" id="btnSave" onlick="save()" class="btn btn-primary">Simpan</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-        <!-- <button type="button" id="btnSimpan" class="btn btn-primary">Simpan</button>
-        <button type="reset" id="btnBatal" class="btn btn-danger" data-dismiss="modal">Batal</button> -->
       </div>
     </div>
   </div>
