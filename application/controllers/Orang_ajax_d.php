@@ -7,18 +7,26 @@ class Orang_ajax_d extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Orang_ajax_m_d','orang');
+		$this->load->library('session');
 	}
 	public function index()
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$this->load->view('orang_ajax/header');
 		$this->load->view('orang_ajax/sidebar');
 		$this->load->view('orang_ajax/table2');
 		$this->load->view('orang_ajax/form2');
 		$this->load->view('orang_ajax/footer');
+
 	}
 
 	public function ajax_list($value='')
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$list = $this->orang->get_datatables();
 		$data = array();
 		$no = $_POST['start'];
@@ -49,6 +57,9 @@ class Orang_ajax_d extends CI_Controller {
 
 	public function ajax_edit($id)
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$data = $this->orang->get_by_id($id);
 		echo json_encode($data);
 	}
@@ -56,6 +67,9 @@ class Orang_ajax_d extends CI_Controller {
 
 	public function ajax_add()
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$this->_validate();
 		$data = array(
 			'nik'		=> $this->input->post('nik'),
@@ -73,6 +87,9 @@ class Orang_ajax_d extends CI_Controller {
 
 	public function ajax_update()
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$this->_validate();
 		$data = array(
 			'nik'		=> $this->input->post('nik'),
@@ -90,12 +107,18 @@ class Orang_ajax_d extends CI_Controller {
 
 	public function ajax_delete($id)
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$this->orang->delete_by_id($id);
 		echo json_encode(array('status' => TRUE));
 	}
 
 	public function _validate()
 	{
+		if ($_SESSION['loggedin'] != true) {
+			redirect('login');
+		}
 		$data = array();
 		$data['error_string'] = array();
 		$data['inputerror'] = array();
