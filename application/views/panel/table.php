@@ -34,8 +34,13 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="<?= base_url ('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="<?= base_url('assets/global/plugins/datatables/datatables.min.css'); ?>" rel="stylesheet" type="text/css" />
+        <!-- <link href="<?= base_url('assets/global/plugins/datatables/datatables.min.css'); ?>" rel="stylesheet" type="text/css" /> -->
+        <link href="<?= base_url('custom/datatables/datatables.min.css'); ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css'); ?>" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="<?= base_url('assets/global/plugins/select2/css/select2.min.css'); ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('assets/global/plugins/select2/css/select2-bootstrap.min.css'); ?>" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="<?= base_url('assets/global/css/components.min.css');?>" rel="stylesheet" id="style_components" type="text/css" />
@@ -57,7 +62,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="index.html">
-                        <img src="<?= base_url('assets/layouts/layout/css/custom.min.css');?>" alt="logo" class="logo-default" /> </a>
+                        <img src="<?= base_url('assets/layouts/layout/img/logo.png'); ?>" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
                     </div>
@@ -272,20 +277,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="col-md-12">
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
                             <div class="portlet light portlet-fit bordered">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="icon-settings font-red"></i>
-                                        <span class="caption-subject font-red sbold uppercase">Table Inputan</span>
-                                    </div>
-                                    <div class="actions">
-                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm active">
-                                                <input type="radio" name="options" class="toggle" id="option1">Actions</label>
-                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm">
-                                                <input type="radio" name="options" class="toggle" id="option2">Settings</label>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="portlet-body">
                                     <div class="table-toolbar">
                                         <div class="row">
@@ -294,32 +286,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <!-- <a href="form_wizard.html" id="sample_editable_1_new" class="btn green"> Tambah
                                                         <i class="fa fa-plus"></i>
                                                     </a> -->
-                                                    <a href="<?= base_url('form/yes'); ?>" class="btn green"> Tambah
+                                                    <!-- <a href="<?= base_url('form/yes'); ?>" class="btn green"> Tambah
                                                         <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="btn-group pull-right">
-                                                    <button class="btn green btn-outline dropdown-toggle" data-toggle="dropdown">Tools
-                                                        <i class="fa fa-angle-down"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu pull-right">
-                                                        <li>
-                                                            <a href="javascript:;"> Print </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"> Save as PDF </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;"> Export to Excel </a>
-                                                        </li>
-                                                    </ul>
+                                                    </a> -->
+                                                    <button type="button" class="btn btn-success" onclick="add_person()" >Tambah</button>
+                                                    <button type="button" class="btn btn-default" onclick="reload_table()" >Reload</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-hover table-bordered" id="sample_editable_1">
+                                    <table class="table table-striped table-hover table-bordered" id="table">
                                         <thead>
                                             <tr>
                                                 <th> NIK </th>
@@ -330,7 +306,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <th> Delete </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <!-- <tbody>
                                           <?php foreach ($orang as $value): ?>
                                             <tr>
                                                 <td> <?= $value['nik']; ?> </td>
@@ -338,7 +314,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <td> <?= $value['phone']; ?> </td>
                                                 <td class="center"> <?= $value['kabkot']; ?> </td>
                                                 <td>
-                                                    <!-- <a class="edit" href="javascript:;"> Edit </a> -->
+
                                                     <form action="<?=base_url('form/edit'); ?>" method="post">
                                                       <input type="hidden" name="id" value="<?= $value['id']; ?>">
                                                       <button type="submit" class="btn btn-sm blue"> Edit
@@ -347,7 +323,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <!-- <a class="delete" href="javascript:;"> Delete </a> -->
+
                                                     <form class="" action="<?= base_url('delete'); ?>" method="post">
                                                       <input type="hidden" name="id" value="<?= $value['id']; ?>">
                                                       <button type="submit" class="btn btn-sm red"> Hapus
@@ -357,6 +333,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </td>
                                             </tr>
                                           <?php endforeach; ?>
+
+                                        </tbody> -->
+                                        <tbody>
 
                                         </tbody>
                                     </table>
@@ -371,6 +350,63 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
+
+        <script type="text/javascript">
+          var save_method;
+          var table;
+
+          // $(document).ready(function() {
+          //   //datatable
+          //   table = $('#table').DataTable({
+          //     "processing": true,
+          //     "serverSide": true,
+          //     "order": [],
+          //
+          //     "ajax": {
+          //       "url": "<?= site_url('table/ajax_list'); ?>",
+          //       "type": "POST",
+          //     }
+          //
+          //     "columnDefs":[{
+          //       "targets": [-1],
+          //       "orderable": false,
+          //     },],
+          //   });
+          //
+          // });
+
+          $(document).ready(function() {
+            $('#btnSave').click(function() {
+              console.log("Berhasil");
+            });
+          });
+
+        </script>
+        <script type="text/javascript">
+          function add_person() {
+            save_method = 'add';
+            $('#form')[0].reset();
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $('#modal_form').modal('show');
+            $('.modal-title').text('Tambah Orang');
+          }
+
+
+          function save() {
+            // $.ajax({
+            //   url: '<?= site_url('form/tambah') ?>',
+            //   method: "POST",
+            //   data: $('#form').serialize(),
+            //   dataType: "JSON",
+            //   success: function(data) {
+            //     $('#modal_form').modal('hide');
+            //     alert("Berhasil save");
+            //   },
+            // });
+            console.log("Berhasil");
+          };
+        </script>
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="page-footer-inner"> 2014 &copy; Metronic by keenthemes.
@@ -381,23 +417,161 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
         </div>
         <!-- END FOOTER -->
+        <div class="modal fade" id="modal_form" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">Tambah Orang</h3>
+              </div>
+              <div class="portlet-body modal-body form" >
+                <form class="form-horizontal" id="form" action="#" >
+                  <input type="hidden" name="id" value="">
+                  <div class="form-body">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">NIK
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" id="mask_number" class="form-control" name="nik" value="" required/>
+                            <span class="help-block"> Isi NIK Sesuai KTP Anda </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nama Lengkap
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="nama" value="" required/>
+                            <span class="help-block"> Masukan Nama Sesuai KTP </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Nomer Handphone
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="phone" value="" required/>
+                            <span class="help-block"> Masukan No HP Aktif </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Jenis Kelamin
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <div class="radio-list">
+                                <label>
+                                    <input type="radio" name="gender" value="L" data-title="Laki-laki" required/> Laki-laki </label>
+                                <label>
+                                    <input type="radio" name="gender" value="P" data-title="Perempuan" required/> Perempuan </label>
+                            </div>
+                            <span class="help-block"> Pilih Laki-laki / Perempuan </span>
+                            <div id="form_gender_error"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Alamat
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="alamat" value="" required/>
+                            <span class="help-block"> Masukan Alamat Lengkap </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Kecamatan
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" name="kecamatan" value="" required/>
+                            <span class="help-block"> Masukan Kecamatan </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Kabupaten / Kota
+                          <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-7">
+                            <select name="kabkot" id="country_list" class="form-control" required>
+                                <option value=""></option>
+                                <option value="Kabupaten Cilacap" >Kabupaten Cilacap</option>
+                                <option value="Kabupaten Banyumas">Kabupaten Banyumas</option>
+                                <option value="Kabupaten Purbalingga">Kabupaten Purbalingga</option>
+                                <option value="Kabupaten Banjarnegara">Kabupaten Banjarnegara</option>
+                                <option value="Kabupaten Kebumen" >Kabupaten Kebumen</option>
+                                <option value="Kabupaten Purworejo">Kabupaten Purworejo</option>
+                                <option value="Kabupaten Wonosobo">Kabupaten Wonosobo</option>
+                                <option value="Kabupaten Magelang">Kabupaten Magelang</option>
+                                <option value="Kabupaten Boyolali">Kabupaten Boyolali</option>
+                                <option value="Kabupaten Klaten">Kabupaten Klaten</option>
+                                <option value="Kabupaten Sukoharjo">Kabupaten Sukoharjo</option>
+                                <option value="Kabupaten Wonogiri">Kabupaten Wonogiri</option>
+                                <option value="Kabupaten Karanganyar">Kabupaten Karanganyar</option>
+                                <option value="Kabupaten Sragen">Kabupaten Sragen</option>
+                                <option value="Kabupaten Grobogan">Kabupaten Grobogan</option>
+                                <option value="Kabupaten Blora">Kabupaten Blora</option>
+                                <option value="Kabupaten Rembang">Kabupaten Rembang</option>
+                                <option value="Kabupaten Pati">Kabupaten Pati</option>
+                                <option value="Kabupaten Kudus">Kabupaten Kudus</option>
+                                <option value="Kabupaten Jepara">Kabupaten Jepara</option>
+                                <option value="Kabupaten Demak">Kabupaten Demak</option>
+                                <option value="Kabupaten Semarang">Kabupaten Semarang</option>
+                                <option value="Kabupaten Temanggung">Kabupaten Temanggung</option>
+                                <option value="Kabupaten Kendal">Kabupaten Kendal</option>
+                                <option value="Kabupaten Batang">Kabupaten Batang</option>
+                                <option value="Kabupaten Pekalongan">Kabupaten Pekalongan</option>
+                                <option value="Kabupaten Pemalang">Kabupaten Pemalang</option>
+                                <option value="Kabupaten Tegal">Kabupaten Tegal</option>
+                                <option value="Kabupaten Brebes">Kabupaten Brebes</option>
+                                <option value="Kota Magelang">Kota Magelang</option>
+                                <option value="Kota Surakarta">Kota Surakarta</option>
+                                <option value="33.74">Kota Semarang</option>
+                                <option value="Kota Salatiga">Kota Salatiga</option>
+                                <option value="Kota Pekalongan">Kota Pekalongan</option>
+                                <option value="Kota Tegal">Kota Tegal</option>
+                            </select>
+                            <span class="help-block"> Pilih Kabupaten / Kota </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Catatan</label>
+                        <div class="col-md-7">
+                            <textarea class="form-control" rows="3" name="catatan"></textarea>
+                            <span class="help-block"> Catatan Penghargaan / Kriminal </span>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="btnSave" onlick="save()" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <!--[if lt IE 9]>
 <script src="assets/global/plugins/respond.min.js"></script>
 <script src="assets/global/plugins/excanvas.min.js"></script>
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-        <script src="<?= base_url('assets/global/plugins/jquery.min.js');?>" type="text/javascript"></script>
+        <!-- <script src="<?= base_url('assets/global/plugins/jquery.min.js');?>" type="text/javascript"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="<?= base_url('assets/global/plugins/bootstrap/js/bootstrap.min.js'); ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/global/plugins/js.cookie.min.js'); ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'); ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/global/plugins/jquery.blockui.min.js'); ?>" type="text/javascript"></script>
+        <!-- <script src="<?= base_url('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/global/plugins/jquery.blockui.min.js'); ?>" type="text/javascript"></script> -->
         <script src="<?= base_url('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="<?= base_url('assets/global/scripts/datatable.js'); ?>" type="text/javascript"></script>
+        <!-- <script src="<?= base_url('assets/global/scripts/datatable.js'); ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/global/plugins/datatables/datatables.min.js'); ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js'); ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js'); ?>" type="text/javascript"></script> -->
+        <script src="<?= base_url('custom/datatables/datatables.min.js'); ?>" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="<?= base_url('assets/global/scripts/app.min.js'); ?>" type="text/javascript"></script>
@@ -413,11 +587,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
         <!-- javascript only here -->
         <script type="text/javascript">
-          function hapus() {
-            if (confirm("Anda yakin hapus?")) {
-              location.href = <?= base_url('table'); ?>;
-            }
-          }
+
         </script>
     </body>
 
