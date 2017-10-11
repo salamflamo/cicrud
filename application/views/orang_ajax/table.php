@@ -4,7 +4,7 @@
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> Table Inputan
+                    <h3 class="page-title"> Table Inputan Ver1
                         <small>Latihan Tampil Data</small>
                     </h3>
                     <!-- END PAGE TITLE-->
