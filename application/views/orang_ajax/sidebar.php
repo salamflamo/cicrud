@@ -55,8 +55,11 @@
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
-                              <li class="nav-item active open">
-                                  <a href="<?= base_url('table'); ?>" class="nav-link "> Table Inputan </a>
+                              <li class="nav-item ">
+                                  <a href="<?= base_url('ver1'); ?>" class="nav-link "> Table Ver1 </a>
+                              </li>
+                              <li class="nav-item ">
+                                  <a href="<?= base_url('ver2'); ?>" class="nav-link "> Table Ver2 </a>
                               </li>
                             </ul>
                         </li>

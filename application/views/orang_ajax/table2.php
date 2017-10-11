@@ -5,7 +5,7 @@
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> Table Inputan
+                    <h3 class="page-title"> Table Inputan Ver2
                         <small>Latihan Tampil Data</small>
                     </h3>
                     <!-- END PAGE TITLE-->
@@ -267,7 +267,9 @@
           }
 
           function delete_orang(id) {
-            if (confirm("Anda yakin hapus data ini?")) {
+            $('#modal_hapus').modal('show');
+            $('#btnHapus').click(function() {
+              $('#modal_hapus').modal('hide');
               $.ajax({
                 url: "<?= site_url('orang_ajax_d/ajax_delete/')?>"+id,
                 type: "POST",
@@ -280,7 +282,10 @@
                   alert("Gagal Menghapus");
                 }
               });
-            }
+            });
+            // if (confirm("Anda yakin hapus data ini?")) {
+            //
+            // }
           }
 
           function detailOrang(id) {
