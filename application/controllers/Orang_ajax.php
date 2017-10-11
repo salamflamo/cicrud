@@ -61,4 +61,6 @@ class Orang_ajax extends CI_Controller {
 		}
 		echo json_encode($msg);
 	}
+
+	
 }

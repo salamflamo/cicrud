@@ -101,7 +101,7 @@
                                             <i class="icon-lock"></i> Lock Screen </a>
                                     </li>
                                     <li>
-                                        <a href="page_user_login_1.html">
+                                        <a href="<?= site_url('login/logout') ?>">
                                             <i class="icon-key"></i> Log Out </a>
                                     </li>
                                 </ul>
