@@ -25,10 +25,10 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="btn-group">
-                                                    <!-- <button type="button" class="btn btn-success" onclick="add_person()" >Tambah</button>
-                                                    <button type="button" class="btn btn-default" onclick="reload_table()" >Reload</button> -->
+                                                    <button type="button" class="btn btn-success" onclick="add_orang()" >Tambah</button>
+                                                    <button type="button" class="btn btn-default" onclick="reload_table()" >Reload</button>
 
-                                                    <button type="button" class="btn btn-success" id="btnTambah" >Tambah</button>
+                                                    <!-- <button type="button" class="btn btn-success" id="btnTambah" >Tambah</button> -->
 
                                                 </div>
                                             </div>
@@ -40,7 +40,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-bordered table-responsive" id="datatabletry">
+                                    <!-- <table class="table table-striped table-bordered table-responsive" id="datatabletry">
                                       <thead>
                                         <td>NIK</td>
                                         <td>Nama</td>
@@ -51,6 +51,31 @@
                                       </thead>
                                       <tbody id="tampildata">
                                       </tbody>
+                                    </table> -->
+                                    <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                      <thead>
+                                        <tr>
+                                          <td>NIK</td>
+                                          <td>Nama</td>
+                                          <td>Phone</td>
+                                          <td>Gender</td>
+                                          <td>Kab. / Kota</td>
+                                          <td>Aksi</td>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+
+                                      </tbody>
+                                      <tfoot>
+                                        <tr>
+                                          <td>NIK</td>
+                                          <td>Nama</td>
+                                          <td>Phone</td>
+                                          <td>Gender</td>
+                                          <td>Kab. / Kota</td>
+                                          <td>Aksi</td>
+                                        </tr>
+                                      </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -64,7 +89,7 @@
         </div>
         <!-- END CONTAINER -->
 
-        <script>
+        <!-- <script>
           $(document).ready(function() {
             //try dataTables
             $('#datatabletry').DataTable();
@@ -311,6 +336,181 @@
             });
 
           });
+        </script> -->
+
+        <script src="<?php echo base_url('assets/jquery/jquery-2.1.4.min.js')?>"></script>
+        <script src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js')?>"></script>
+        <script src="<?php echo base_url('assets/datatables/js/jquery.dataTables.min.js')?>"></script>
+        <script src="<?php echo base_url('assets/datatables/js/dataTables.bootstrap.js')?>"></script>
+
+        <script type="text/javascript">
+          var save_method;
+          var table;
+
+          $(document).ready(function() {
+            table = $('#table').DataTable({
+              "processing"  : true,
+              "serverSide"  : true,
+              "order"       : [],
+
+              "ajax"        : {
+                "url"   : "<?= site_url('orang_ajax_d/ajax_list'); ?>",
+                "type"  : "post"
+              },
+              "columnDefs"  : [{
+                "targets"    : [-1],
+                "orderable"  : false,
+              },],
+            });
+
+            $("input").change(function() {
+              $(this).parent().parent().removeClass('has-error');
+              $(this).next().empty();
+            });
+            $("input[type=radio]").change(function() {
+              $(this).parent().parent().removeClass('has-error');
+              $(this).next().empty();
+            });
+            $("select").change(function() {
+              $(this).parent().parent().removeClass('has-error');
+              $(this).next().empty();
+            });
+
+
+            $('#btnSave').click(function() {
+              $('#btnSave').text('saving...');
+              $('#btnSave').attr('disabled',true);
+              var url;
+              if (save_method == 'add') {
+                url: "<?= site_url('orang_ajax_d/ajax_add');?>";
+              } else {
+                url: "<?= site_url('orang_ajax_d/ajax_update');?>";
+              }
+
+              $.ajax({
+                url: url,
+                type: "POST",
+                data: $('#form').serialize(),
+                dataType: "JSON",
+                success: function(data) {
+                  if (data.status) {
+                    $('#modal_form').modal('hide');
+                    $('#form')[0].reset();
+                    reload_table();
+                  } else {
+                    for (var i = 0; i < data.inputerror; i++) {
+                      $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
+                      $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
+                    }
+                  }
+                  $('#btnSave').text("Simpan");
+                  $('#btnSave').attr('disabled',false);
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                  alert("Tidak bisa menambah orang");
+                  $('#btnSave').text("Simpan");
+                  $('#btnSave').attr('disabled',false);
+                }
+              });
+            });
+          });
+
+          function add_orang() {
+            save_method = 'add';
+            $('#form')[0].reset();
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $('#modal_form').modal('show');
+            $('.modal-title').text('Nambah Orang');
+          }
+
+          function edit_orang(id) {
+            save_method = 'update',
+            $('#form')[0].reset();
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+
+            $.ajax({
+              url: "<?= site_url('orang_ajax_d/ajax_edit/'); ?>"+id,
+              type: "GET",
+              dataType: "JSON",
+              success: function(data) {
+                $('[name="id"]').val(data.id);
+                $('[name="nik"]').val(data.nik);
+                $('[name="nama"]').val(data.nama);
+                $('[name="phone"]').val(data.phone);
+                $('[name="gender"]').val(data.gender);
+                $('[name="alamat"]').val(data.alamat);
+                $('[name="kecamatan"]').val(data.kecamatan);
+                $('[name="kabkot"]').val(data.kabkot);
+                $('[name="catatan"]').val(data.catatan);
+                $('#modal_form').modal('show');
+                $('.modal-title').text("Edit Orang");
+              },
+              error: function(jqXHR,textStatus,errorThrown) {
+                alert("Tidak bisa mengambil data");
+              }
+            });
+          }
+
+          function reload_table() {
+            table.ajax.reload(null,false);
+          }
+
+          function save() {
+
+            // $('#btnSave').text('saving...');
+            // $('#btnSave').attr('disabled',true);
+            // var url;
+            // if (save_method == 'add') {
+            //   url: "<?= site_url('orang_ajax_d/ajax_add');?>";
+            // } else {
+            //   url: "<?= site_url('orang_ajax_d/ajax_update');?>";
+            // }
+            //
+            // $.ajax({
+            //   url: url,
+            //   type: "POST",
+            //   data: $('#form').serialize(),
+            //   dataType: "JSON",
+            //   success: function(data) {
+            //     if (data.status) {
+            //       $('#modal_form').modal('hide');
+            //       $('#form')[0].reset();
+            //       reload_table();
+            //     } else {
+            //       for (var i = 0; i < data.inputerror; i++) {
+            //         $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
+            //         $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
+            //       }
+            //     }
+            //     $('#btnSave').text("Simpan");
+            //     $('#btnSave').attr('disabled',false);
+            //   },
+            //   error: function(jqXHR,textStatus,errorThrown) {
+            //     alert("Tidak bisa menambah orang");
+            //     $('#btnSave').text("Simpan");
+            //     $('#btnSave').attr('disabled',false);
+            //   }
+            // });
+          }
+
+          function delete_orang(id) {
+            if (confirm("Anda yakin hapus data ini?")) {
+              $.ajax({
+                url: "<?= site_url('orang_ajax_d/ajax_delete/')?>"+id,
+                type: "POST",
+                dataType: "JSON",
+                success: function(data) {
+                  $('#modal_form').modal('hide');
+                  reload_table();
+                },
+                error: function(jqXHR,textStatus,errorThrown) {
+                  alert("Gagal Menghapus");
+                }
+              });
+            }
+          }
         </script>
 
         <div id="modal_hapus" class="modal fade" tabindex="-1" role="dialog">

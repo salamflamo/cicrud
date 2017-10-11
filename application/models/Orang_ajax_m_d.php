@@ -63,7 +63,7 @@ class Orang_ajax_m_d extends CI_Model
   public function count_all()
   {
     $this->db->from($this->table);
-    return $this->db->count_all_result();
+    return $this->db->count_all_results();
   }
 
   public function get_by_id($id)

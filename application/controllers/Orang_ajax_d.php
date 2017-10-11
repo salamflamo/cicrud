@@ -13,7 +13,7 @@ class Orang_ajax_d extends CI_Controller {
 		$this->load->view('orang_ajax/header');
 		$this->load->view('orang_ajax/sidebar');
 		$this->load->view('orang_ajax/table2');
-		$this->load->view('orang_ajax/form');
+		$this->load->view('orang_ajax/form2');
 		$this->load->view('orang_ajax/footer');
 	}
 
