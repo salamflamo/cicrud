@@ -1,9 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+$pesan = array('success'=>false);
 
 class Login extends CI_Controller
 {
+
 
   function __construct()
   {
@@ -11,10 +12,13 @@ class Login extends CI_Controller
     $this->load->library('session');
     $this->load->library('encrypt');
     $this->load->model('login_m','l');
+    $this->load->helper('string');
+    $this->$msg =& $pesan ;
   }
 
   public function login()
 	{
+
 		$this->load->view('login');
 	}
 
@@ -22,14 +26,18 @@ class Login extends CI_Controller
   {
     $password = $this->input->post('password');
     $hashed = $this->encrypt->encode($password);
+    $token = random_string('alnum',16);
     $data = array(
       'username' => $this->input->post('username'),
       'password' => $hashed,
       'nama' => $this->input->post('nama'),
       'email' => $this->input->post('email'),
+      'token' => $token,
+      'active' => 'F'
     );
     $q = $this->l->register($data);
     if ($q) {
+      $this->msg['success'] = true;
       redirect('login');
     } else {
       echo "Gagal";

@@ -44,6 +44,12 @@
         <!-- BEGIN LOGIN -->
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
+            <?php if ($success == true): ?>
+              <div class="alert alert-success">
+                <h3>Berhasil, silahkan cek email kamu</h3>
+              </div>
+            <?php endif; ?>
+
             <form class="login-form" action="<?= base_url('verif');?>" method="post">
                 <div class="form-title">
                     <span class="form-title">Selamat Datang.</span>
