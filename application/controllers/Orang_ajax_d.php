@@ -25,17 +25,15 @@ class Orang_ajax_d extends CI_Controller {
 		foreach ($list as $value) {
 			$no++;
 			$row = array();
-			$row[] = $value->nik;
+			$row[] = '<a class="item-detail" onclick="detailOrang('.$value->id.')" href="javascript:;" data="'.$value->id.'">'.$value->nik.'</a>';
 			$row[] = $value->nama;
 			$row[] = $value->phone;
 			$row[] = $value->gender;
-			$row[] = $value->alamat;
-			$row[] = $value->kecamatan;
 			$row[] = $value->kabkot;
-			$row[] = $value->catatan;
+
 
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_orang('.$value->id.')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>'.
-								'<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="hapus_orang('.$value->id.')"><i class="glyphicon glyphicon-trash"></i> Hapus</a>';
+								'<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="delete_orang('.$value->id.')"><i class="glyphicon glyphicon-trash"></i> Hapus</a>';
 			$data[] = $row;
 		}
 
@@ -55,7 +53,25 @@ class Orang_ajax_d extends CI_Controller {
 		echo json_encode($data);
 	}
 
+
 	public function ajax_add()
+	{
+		$this->_validate();
+		$data = array(
+			'nik'		=> $this->input->post('nik'),
+			'nama'		=> $this->input->post('nama'),
+			'phone'		=> $this->input->post('phone'),
+			'gender'		=> $this->input->post('gender'),
+			'alamat'		=> $this->input->post('alamat'),
+			'kecamatan'		=> $this->input->post('kecamatan'),
+			'kabkot'		=> $this->input->post('kabkot'),
+			'catatan'		=> $this->input->post('catatan'),
+		);
+		$this->orang->save($data);
+		echo json_encode(array('status' => TRUE));
+	}
+
+	public function ajax_update()
 	{
 		$this->_validate();
 		$data = array(

@@ -63,7 +63,7 @@
                                           <td>Aksi</td>
                                         </tr>
                                       </thead>
-                                      <tbody>
+                                      <tbody id="tampildata">
 
                                       </tbody>
                                       <tfoot>
@@ -376,43 +376,100 @@
               $(this).next().empty();
             });
 
-
+            //menyimpan data
             $('#btnSave').click(function() {
-              $('#btnSave').text('saving...');
-              $('#btnSave').attr('disabled',true);
-              var url;
-              if (save_method == 'add') {
-                url: "<?= site_url('orang_ajax_d/ajax_add');?>";
+              var nik = $('input[name=nik]');
+              var nama = $('input[name=nama]');
+              var phone = $('input[name=phone]');
+              var gender = $('input[name=gender]');
+              var alamat = $('input[name=alamat]');
+              var kecamatan = $('input[name=kecamatan]');
+              var kabkot = $('input[name=kabkot]');
+              var hasil = '';
+              if (nik.val() == '') {
+                nik.parent().parent().addClass('has-error');
               } else {
-                url: "<?= site_url('orang_ajax_d/ajax_update');?>";
-              }
 
-              $.ajax({
-                url: url,
-                type: "POST",
-                data: $('#form').serialize(),
-                dataType: "JSON",
-                success: function(data) {
-                  if (data.status) {
+                nik.parent().parent().removeClass('has-error');
+                hasil += '1';
+              }
+              if (nama.val() == '') {
+                nama.parent().parent().addClass('has-error');
+              } else {
+                nama.parent().parent().removeClass('has-error');
+                hasil += '2';
+              }
+              if (phone.val() == '') {
+                phone.parent().parent().addClass('has-error');
+              } else {
+                phone.parent().parent().removeClass('has-error');
+                hasil += '3';
+              }
+              if (gender.val() == '') {
+                gender.parent().parent().addClass('has-error');
+              } else {
+                gender.parent().parent().removeClass('has-error');
+                hasil += '4';
+              }
+              if (alamat.val() == '') {
+                alamat.parent().parent().addClass('has-error');
+              } else {
+                alamat.parent().parent().removeClass('has-error');
+                hasil += '5';
+              }
+              if (kecamatan.val() == '') {
+                kecamatan.parent().parent().addClass('has-error');
+              } else {
+                kecamatan.parent().parent().removeClass('has-error');
+                hasil += '6';
+              }
+              if (kabkot.val() == '') {
+                kabkot.parent().parent().addClass('has-error');
+              } else {
+                kabkot.parent().parent().removeClass('has-error');
+                hasil += '7';
+              }
+              if (hasil != '1234567') {
+                alert("Jangan sampai ada inputan yang kosong")
+              } else {
+                $('#btnSave').text('Menyimpan...');
+                $('#btnSave').attr('disabled',true);
+                var url;
+                var data = $('#form').serialize();
+                var id = $('input[name=id]').val();
+                if (id == 0) {
+                  url = "<?= base_url(); ?>orang_ajax_d/ajax_add";
+                } else {
+                  url = "<?= base_url(); ?>orang_ajax_d/ajax_update";
+                }
+                $.ajax({
+                  type: 'ajax',
+                  method: 'post',
+                  url: url,
+                  data: data,
+                  async: false,
+                  dataType: 'json',
+                  success: function(data) {
                     $('#modal_form').modal('hide');
                     $('#form')[0].reset();
+                    $('#btnSave').attr('disabled',false);
+                    $('#btnSave').text('Simpan');
                     reload_table();
-                  } else {
-                    for (var i = 0; i < data.inputerror; i++) {
-                      $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
-                      $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-                    }
+
+                  },
+                  error: function() {
+                    $('#btnSave').attr('disabled',false);
+                    $('#btnSave').text('Simpan');
+                    alert("Gagal menyimpan!");
                   }
-                  $('#btnSave').text("Simpan");
-                  $('#btnSave').attr('disabled',false);
-                },
-                error: function(jqXHR,textStatus,errorThrown) {
-                  alert("Tidak bisa menambah orang");
-                  $('#btnSave').text("Simpan");
-                  $('#btnSave').attr('disabled',false);
-                }
-              });
+                });
+              }
+              
+
             });
+
+
+          //batas akhir ready fungsi
           });
 
           function add_orang() {
@@ -439,13 +496,26 @@
                 $('[name="nik"]').val(data.nik);
                 $('[name="nama"]').val(data.nama);
                 $('[name="phone"]').val(data.phone);
-                $('[name="gender"]').val(data.gender);
+                if (data.gender == 'L') {
+                  var html = '<label>'+
+                                '<input type="radio" name="gender" value="L" data-title="Laki-laki" checked/> Laki-laki </label>'+
+                            '<label>'+
+                                '<input type="radio" name="gender" value="P" data-title="Perempuan" /> Perempuan </label>';
+                  $('#pilihgender').html(html);
+                } else if (data.gender == 'P') {
+                  var html = '<label>'+
+                                '<input type="radio" name="gender" value="L" data-title="Laki-laki" /> Laki-laki </label>'+
+                            '<label>'+
+                                '<input type="radio" name="gender" value="P" data-title="Perempuan" checked/> Perempuan </label>';
+                  $('#pilihgender').html(html);
+                }
                 $('[name="alamat"]').val(data.alamat);
                 $('[name="kecamatan"]').val(data.kecamatan);
                 $('[name="kabkot"]').val(data.kabkot);
                 $('[name="catatan"]').val(data.catatan);
                 $('#modal_form').modal('show');
                 $('.modal-title').text("Edit Orang");
+
               },
               error: function(jqXHR,textStatus,errorThrown) {
                 alert("Tidak bisa mengambil data");
@@ -455,44 +525,6 @@
 
           function reload_table() {
             table.ajax.reload(null,false);
-          }
-
-          function save() {
-
-            // $('#btnSave').text('saving...');
-            // $('#btnSave').attr('disabled',true);
-            // var url;
-            // if (save_method == 'add') {
-            //   url: "<?= site_url('orang_ajax_d/ajax_add');?>";
-            // } else {
-            //   url: "<?= site_url('orang_ajax_d/ajax_update');?>";
-            // }
-            //
-            // $.ajax({
-            //   url: url,
-            //   type: "POST",
-            //   data: $('#form').serialize(),
-            //   dataType: "JSON",
-            //   success: function(data) {
-            //     if (data.status) {
-            //       $('#modal_form').modal('hide');
-            //       $('#form')[0].reset();
-            //       reload_table();
-            //     } else {
-            //       for (var i = 0; i < data.inputerror; i++) {
-            //         $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
-            //         $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-            //       }
-            //     }
-            //     $('#btnSave').text("Simpan");
-            //     $('#btnSave').attr('disabled',false);
-            //   },
-            //   error: function(jqXHR,textStatus,errorThrown) {
-            //     alert("Tidak bisa menambah orang");
-            //     $('#btnSave').text("Simpan");
-            //     $('#btnSave').attr('disabled',false);
-            //   }
-            // });
           }
 
           function delete_orang(id) {
@@ -510,6 +542,33 @@
                 }
               });
             }
+          }
+
+          function detailOrang(id) {
+            $.ajax({
+              type: 'ajax',
+              method: 'get',
+              url: '<?= base_url(); ?>orang_ajax_d/ajax_edit/'+id,
+              data: {id:id},
+              async: false,
+              dataType: 'json',
+              success: function(data) {
+                $('#modal_detail').modal('show');
+                $('#nik').html(data.nik);
+                $('#nama').html(data.nama);
+                $('#phone').html(data.phone);
+                var g = data.gender;
+                if (g == "L") {
+                  $('#gender').html("Laki-laki");
+                } else {
+                  $('#gender').html("Perempuan");
+                }
+                $('#alamat').html(data.alamat);
+                $('#kecamatan').html(data.kecamatan);
+                $('#kabkot').html(data.kabkot);
+                $('#catatan').html(data.catatan);
+              },
+            });
           }
         </script>
 

@@ -9,7 +9,7 @@
       </div>
       <div class="portlet-body modal-body form" >
         <form class="form-horizontal" id="form" action="" method="post">
-          
+          <input type="hidden" name="id" value="">
           <div class="form-body">
             <div class="form-group">
                 <label class="control-label col-md-3">NIK
