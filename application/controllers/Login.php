@@ -40,7 +40,7 @@ class Login extends CI_Controller
         'token' => $token,
         'active' => 'F'
       );
-      $q = $this->l->register($data);
+
       if ($q) {
         $config['mailtype'] = 'html';
         $this->load->library('email',$config);
@@ -49,9 +49,16 @@ class Login extends CI_Controller
         $this->email->to($this->input->post('email'));
         $this->email->subject('Email Aktifasi');
         $this->email->message('Silahkan klik <a href="'.base_url().'login/aktifasi/'.$this->input->post('username').'/'.$token.'">aktifasi </a>');
-        $this->email->send();
-        $msg['success'] = true;
-        echo json_encode($msg);
+
+        if ($this->email->send()) {
+          $q = $this->l->register($data);
+          $msg['success'] = true;
+          echo json_encode($msg);
+        } else {
+          $msg['success'] = false;
+          echo json_encode($msg);
+        }
+
       }
     } else {
       $msg['success'] = false;
