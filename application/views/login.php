@@ -165,9 +165,9 @@
                   success : function(data) {
                     if (data.success) {
                       $('.register-form')[0].reset();
-                      $('.alert-success').text("Berhasil mendaftar silahkan login").fadeIn().delay(4000).fadeOut('slow');
+                      $('#success').text("Berhasil mendaftar silahkan login").fadeIn().delay(4000).fadeOut('slow');
                     } else {
-                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
+                      $('#gagal').text("Gagal, email tidak valid").fadeIn().delay(4000).fadeOut('slow');
                     }
                   },
                   error   : function() {

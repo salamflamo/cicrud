@@ -32,25 +32,30 @@ class Login extends CI_Controller
     $hashed = $this->encrypt->encode($password);
     $token = random_string('alnum',16);
     if ($this->l->checkUser($this->input->post('username'))) {
-      $data = array(
-        'username' => $this->input->post('username'),
-        'password' => $hashed,
-        'nama' => $this->input->post('nama'),
-        'email' => $this->input->post('email'),
-        'token' => $token,
-        'active' => 'F'
-      );
-      $q = $this->l->register($data);
-      if ($q) {
-        $config['mailtype'] = 'html';
-        $this->load->library('email',$config);
-        $this->email->set_newline("\r\n");
-        $this->email->from('pengurus.warungtegal@gmail.com','Pengurus warungtegal.id');
-        $this->email->to($this->input->post('email'));
-        $this->email->subject('Email Aktifasi');
-        $this->email->message('Silahkan klik <a href="'.base_url().'login/aktifasi/'.$this->input->post('username').'/'.$token.'">aktifasi </a>');
-        $this->email->send();
-        $msg['success'] = true;
+      $config['mailtype'] = 'html';
+      $this->load->library('email',$config);
+      $this->email->set_newline("\r\n");
+      $this->email->from('pengurus.warungtegal@gmail.com','Pengurus warungtegal.id');
+      $this->email->to($this->input->post('email'));
+      $this->email->subject('Email Aktifasi');
+      $this->email->message('Silahkan klik <a href="'.base_url().'login/aktifasi/'.$this->input->post('username').'/'.$token.'">aktifasi </a>');
+
+      if ($this->email->send()) {
+        $data = array(
+          'username' => $this->input->post('username'),
+          'password' => $hashed,
+          'nama' => $this->input->post('nama'),
+          'email' => $this->input->post('email'),
+          'token' => $token,
+          'active' => 'F'
+        );
+        $q = $this->l->register($data);
+        if ($q) {
+          $msg['success'] = true;
+          echo json_encode($msg);
+        }
+      } else {
+        $msg['success'] = false;
         echo json_encode($msg);
       }
     } else {
