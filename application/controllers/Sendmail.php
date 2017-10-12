@@ -14,10 +14,9 @@ class Sendmail extends CI_Controller
   {
 
     $config['mailtype'] = 'html';
-
     $this->load->library('email',$config);
     $this->email->set_newline("\r\n");
-    $this->email->from('Email Perusahaan','Salamuddin');
+    $this->email->from('pengurus.warungtegal@gmail.com','Pengurus warungtegal.id');
     $this->email->to($email);
     $this->email->subject('Njajal lagi');
     $this->email->message('<a href="'.base_url().$email.'/'.$token.'">Token ini </a>');

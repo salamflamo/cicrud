@@ -18,8 +18,12 @@ class Login extends CI_Controller
 
   public function login()
 	{
+    if (!isset($_SESSION['loggedin'])) {
+      $this->load->view('login');
+    } else {
+      redirect(base_url('ver1'));
+    }
 
-		$this->load->view('login');
 	}
 
   public function register()
@@ -27,7 +31,6 @@ class Login extends CI_Controller
     $password = $this->input->post('password');
     $hashed = $this->encrypt->encode($password);
     $token = random_string('alnum',16);
-
     if ($this->l->checkUser($this->input->post('username'))) {
       $data = array(
         'username' => $this->input->post('username'),
@@ -38,12 +41,20 @@ class Login extends CI_Controller
         'active' => 'F'
       );
       $q = $this->l->register($data);
-      $msg['success'] = false;
       if ($q) {
+        $config['mailtype'] = 'html';
+        $this->load->library('email',$config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('pengurus.warungtegal@gmail.com','Pengurus warungtegal.id');
+        $this->email->to($this->input->post('email'));
+        $this->email->subject('Email Aktifasi');
+        $this->email->message('Silahkan klik <a href="'.base_url().'login/aktifasi/'.$this->input->post('username').'/'.$token.'">aktifasi </a>');
+        $this->email->send();
         $msg['success'] = true;
         echo json_encode($msg);
       }
     } else {
+      $msg['success'] = false;
       echo json_encode($msg);
     }
 
@@ -80,9 +91,10 @@ class Login extends CI_Controller
   public function logout()
   {
     unset(
-      $_SESSION['loggedin'],
-      $_SESSION['username']
+        $_SESSION['loggedin'],
+        $_SESSION['username']
     );
+
     redirect('login');
   }
 
@@ -90,9 +102,9 @@ class Login extends CI_Controller
   {
     $q = $this->l->aktifasi($username,$token);
     if ($q == true) {
-      echo "Berhasil aktifasi";
+      redirect('login');
     } else {
-      echo "Gagal aktifasi";
+      echo 'Maaf username atau token tidak tersedia silahkan <a href="'.base_url('login').'">mendaftar</a>';
     }
   }
 

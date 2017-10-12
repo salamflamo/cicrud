@@ -35,9 +35,9 @@ class Login_m extends CI_Model
     $this->db->where('username',$username);
     $q = $this->db->get('user');
     if ($q->num_rows() > 0) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 

@@ -44,15 +44,13 @@
         <!-- BEGIN LOGIN -->
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
-            <div id="login_success" class="">
 
-            </div>
             <form class="login-form" action="" method="post">
                 <div class="form-title">
                     <span class="form-title">Selamat Datang.</span>
                     <span class="form-subtitle">Silahkan login.</span>
                 </div>
-                <div class="alert alert-danger display-hide">
+                <div id="login_success" class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
                     <span> Isi Username dan Password. </span>
                 </div>
@@ -116,7 +114,10 @@
             </form>
             <!-- END FORGOT PASSWORD FORM -->
             <!-- BEGIN REGISTRATION FORM -->
-            <div id="success" class="alert alert-danger" style="display: none;">
+            <div id="success" class="alert alert-success" style="display: none;">
+
+            </div>
+            <div id="gagal" class="alert alert-danger" style="display: none;">
 
             </div>
             <form class="register-form" action="" method="post">
@@ -164,13 +165,13 @@
                   success : function(data) {
                     if (data.success) {
                       $('.register-form')[0].reset();
-                      $('#success').addClass('alert alert-success').text("Berhasil mendaftar silahkan login").delay(4000).fadeOut('slow');
+                      $('.alert-success').text("Berhasil mendaftar silahkan login").fadeIn().delay(4000).fadeOut('slow');
                     } else {
-                      $('#success').addClass('alert alert-danger').text("Gagal Mendaftar").delay(4000).fadeOut('slow');
+                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
                     }
                   },
                   error   : function() {
-                    $('#success').addClass('alert alert-danger').text("Gagal mendaftar, username sudah ada ").delay(4000).fadeOut('slow');
+                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
                   }
                 });
               }
@@ -190,18 +191,18 @@
                       // $('.alert-danger').text("Jane Berhasil ").fadeIn().delay(4000).fadeOut('slow');
                     }
                     else if (data.success == 'password') {
-                      $('.alert-danger').text("Password salah ").fadeIn().delay(4000).fadeOut('slow');
+                      $('#login_success').text("Password salah ").fadeIn().delay(4000).fadeOut('slow');
 
                     } else if (data.success == 'token') {
-                      $('.alert-danger').text("Gagal login, silahkan aktifasi email anda ").fadeIn().delay(4000).fadeOut('slow');
+                      $('#login_success').text("Gagal login, silahkan aktifasi email anda ").fadeIn().delay(4000).fadeOut('slow');
 
                     } else if (data.success == 'username') {
-                      $('.alert-danger').text("Username salah ").fadeIn().delay(4000).fadeOut('slow');
+                      $('#login_success').text("Username salah ").fadeIn().delay(4000).fadeOut('slow');
 
                     }
                   },
                   error  : function() {
-                    $('#login_success').addClass('alert alert-danger').text("Gagal login, username tidak ada  ").delay(4000).fadeOut('slow');
+                    $('#login_success').text("Gagal login, username tidak ada  ").fadeIn().delay(4000).fadeOut('slow');
                   }
                 });
               }
