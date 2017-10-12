@@ -35,9 +35,22 @@ class Login_m extends CI_Model
     $this->db->where('username',$username);
     $q = $this->db->get('user');
     if ($q->num_rows() > 0) {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function aktifasi($username,$token)
+  {
+    $this->db->where('username',$username);
+    $q = $this->db->get('user');
+    if ($q->num_rows() > 0) {
+      $data = array('active' => 'T');
+      $this->db->update('user',$data);
+      return true;
+    } else {
+      return false;
     }
   }
 }

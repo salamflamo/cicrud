@@ -55,12 +55,14 @@ class Login extends CI_Controller
     $q = $this->l->checkLogin();
     $pp = $this->input->post('password');
     if ($q != false) {
-      $_SESSION['loggedin'] = true;
-      $_SESSION['username'] = $q->username;
+
       $p = $this->encrypt->decode($q->password);
       if ($pp == $p) {
-        if ($q->token == 'T') {
-          redirect(base_url('ver1'));
+        if ($q->active == 'T') {
+          $_SESSION['loggedin'] = true;
+          $_SESSION['username'] = $q->username;
+          $msg['success'] = 'login';
+          echo json_encode($msg);
         } else {
           $msg['success'] = 'token';
           echo json_encode($msg);
@@ -82,6 +84,16 @@ class Login extends CI_Controller
       $_SESSION['username']
     );
     redirect('login');
+  }
+
+  public function aktifasi($username,$token)
+  {
+    $q = $this->l->aktifasi($username,$token);
+    if ($q == true) {
+      echo "Berhasil aktifasi";
+    } else {
+      echo "Gagal aktifasi";
+    }
   }
 
 }

@@ -116,7 +116,7 @@
             </form>
             <!-- END FORGOT PASSWORD FORM -->
             <!-- BEGIN REGISTRATION FORM -->
-            <div id="success" class="">
+            <div id="success" class="alert alert-danger" style="display: none;">
 
             </div>
             <form class="register-form" action="" method="post">
@@ -185,10 +185,19 @@
                   data    : $('.login-form').serialize(),
                   async   : false,
                   success : function(data) {
-                    if (data.success == 'password') {
-                      $('#login_success').addClass('alert alert-danger').text("Gagal login, username tidak ada, silahkan mendaftar ").delay(4000).fadeOut('slow');
+                    if (data.success == 'login') {
+                      window.location.replace("<?= base_url('ver1'); ?>");
+                      // $('.alert-danger').text("Jane Berhasil ").fadeIn().delay(4000).fadeOut('slow');
+                    }
+                    else if (data.success == 'password') {
+                      $('.alert-danger').text("Password salah ").fadeIn().delay(4000).fadeOut('slow');
+
                     } else if (data.success == 'token') {
-                      $('#login_success').addClass('alert alert-danger').text("Gagal login, silahkan aktifasi email anda ").delay(4000).fadeOut('slow');
+                      $('.alert-danger').text("Gagal login, silahkan aktifasi email anda ").fadeIn().delay(4000).fadeOut('slow');
+
+                    } else if (data.success == 'username') {
+                      $('.alert-danger').text("Username salah ").fadeIn().delay(4000).fadeOut('slow');
+
                     }
                   },
                   error  : function() {
