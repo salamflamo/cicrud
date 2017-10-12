@@ -171,7 +171,7 @@
                     }
                   },
                   error   : function() {
-                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
+                      $('#gagal').text("Gagal, username sudah ada atau email tidak valid").fadeIn().delay(4000).fadeOut('slow');
                   }
                 });
               }
