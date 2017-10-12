@@ -44,12 +44,13 @@
         <!-- BEGIN LOGIN -->
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="<?= base_url('verif');?>" method="post">
+
+            <form class="login-form" action="" method="post">
                 <div class="form-title">
                     <span class="form-title">Selamat Datang.</span>
                     <span class="form-subtitle">Silahkan login.</span>
                 </div>
-                <div class="alert alert-danger display-hide">
+                <div id="login_success" class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
                     <span> Isi Username dan Password. </span>
                 </div>
@@ -61,7 +62,7 @@
                     <label class="control-label visible-ie8 visible-ie9">Password</label>
                     <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" required=""/> </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn red btn-block uppercase">Login</button>
+                    <button type="button" onclick="btnLogin()" class="btn red btn-block uppercase">Login</button>
                 </div>
                 <div class="form-actions">
                     <div class="pull-left">
@@ -113,7 +114,13 @@
             </form>
             <!-- END FORGOT PASSWORD FORM -->
             <!-- BEGIN REGISTRATION FORM -->
-            <form class="register-form" action="<?= base_url('login/register')?>" method="post">
+            <div id="success" class="alert alert-success" style="display: none;">
+
+            </div>
+            <div id="gagal" class="alert alert-danger" style="display: none;">
+
+            </div>
+            <form class="register-form" action="" method="post">
                 <div class="form-title">
                     <span class="form-title">Mendaftar</span>
                 </div>
@@ -141,9 +148,65 @@
 
                 <div class="form-actions">
                     <button type="button" id="register-back-btn" class="btn btn-default">Back</button>
-                    <input type="submit" class="btn red uppercase pull-right" value="Daftar">
+                    <button type="button" id="btnSubmit" onclick="btnSave()" class="btn red uppercase pull-right" value="Daftar">Daftar</button>
                 </div>
             </form>
+            <script src="<?php echo base_url('assets/jquery/jquery-2.1.4.min.js')?>"></script>
+            <script type="text/javascript">
+              //ini bagian registrasi
+              function btnSave() {
+                $.ajax({
+                  type    : 'ajax',
+                  url     : '<?= base_url('login/register') ?>',
+                  dataType: 'json',
+                  async   : false,
+                  method  : 'post',
+                  data    : $('.register-form').serialize(),
+                  success : function(data) {
+                    if (data.success) {
+                      $('.register-form')[0].reset();
+                      $('.alert-success').text("Berhasil mendaftar silahkan login").fadeIn().delay(4000).fadeOut('slow');
+                    } else {
+                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
+                    }
+                  },
+                  error   : function() {
+                      $('#gagal').text("Gagal, username sudah ada").fadeIn().delay(4000).fadeOut('slow');
+                  }
+                });
+              }
+
+              //ini bagian login
+              function btnLogin() {
+                $.ajax({
+                  type    : 'ajax',
+                  url     : '<?= base_url('verif') ?>',
+                  dataType: 'json',
+                  method  : 'post',
+                  data    : $('.login-form').serialize(),
+                  async   : false,
+                  success : function(data) {
+                    if (data.success == 'login') {
+                      window.location.replace("<?= base_url('ver1'); ?>");
+                      // $('.alert-danger').text("Jane Berhasil ").fadeIn().delay(4000).fadeOut('slow');
+                    }
+                    else if (data.success == 'password') {
+                      $('#login_success').text("Password salah ").fadeIn().delay(4000).fadeOut('slow');
+
+                    } else if (data.success == 'token') {
+                      $('#login_success').text("Gagal login, silahkan aktifasi email anda ").fadeIn().delay(4000).fadeOut('slow');
+
+                    } else if (data.success == 'username') {
+                      $('#login_success').text("Username salah ").fadeIn().delay(4000).fadeOut('slow');
+
+                    }
+                  },
+                  error  : function() {
+                    $('#login_success').text("Gagal login, username tidak ada  ").fadeIn().delay(4000).fadeOut('slow');
+                  }
+                });
+              }
+            </script>
             <!-- END REGISTRATION FORM -->
         </div>
         <div class="copyright hide"> 2014 © Metronic. Admin Dashboard Template. </div>
