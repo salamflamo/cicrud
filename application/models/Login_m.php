@@ -28,6 +28,16 @@ class Login_m extends CI_Model
     } else {
       return false;
     }
+  }
 
+  public function checkUser($username)
+  {
+    $this->db->where('username',$username);
+    $q = $this->db->get('user');
+    if ($q->num_rows() > 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

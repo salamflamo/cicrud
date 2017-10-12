@@ -13,7 +13,7 @@ class Login extends CI_Controller
     $this->load->library('encrypt');
     $this->load->model('login_m','l');
     $this->load->helper('string');
-    $this->$msg =& $pesan ;
+
   }
 
   public function login()
@@ -27,25 +27,31 @@ class Login extends CI_Controller
     $password = $this->input->post('password');
     $hashed = $this->encrypt->encode($password);
     $token = random_string('alnum',16);
-    $data = array(
-      'username' => $this->input->post('username'),
-      'password' => $hashed,
-      'nama' => $this->input->post('nama'),
-      'email' => $this->input->post('email'),
-      'token' => $token,
-      'active' => 'F'
-    );
-    $q = $this->l->register($data);
-    if ($q) {
-      $this->msg['success'] = true;
-      redirect('login');
+
+    if ($this->l->checkUser($this->input->post('username'))) {
+      $data = array(
+        'username' => $this->input->post('username'),
+        'password' => $hashed,
+        'nama' => $this->input->post('nama'),
+        'email' => $this->input->post('email'),
+        'token' => $token,
+        'active' => 'F'
+      );
+      $q = $this->l->register($data);
+      $msg['success'] = false;
+      if ($q) {
+        $msg['success'] = true;
+        echo json_encode($msg);
+      }
     } else {
-      echo "Gagal";
+      echo json_encode($msg);
     }
+
   }
 
   public function loginVerif()
   {
+    $msg['success'] = '';
     $q = $this->l->checkLogin();
     $pp = $this->input->post('password');
     if ($q != false) {
@@ -53,12 +59,19 @@ class Login extends CI_Controller
       $_SESSION['username'] = $q->username;
       $p = $this->encrypt->decode($q->password);
       if ($pp == $p) {
-        redirect(base_url('ver1'));
+        if ($q->token == 'T') {
+          redirect(base_url('ver1'));
+        } else {
+          $msg['success'] = 'token';
+          echo json_encode($msg);
+        }
       } else {
-        redirect('login');
+        $msg['success'] = 'password';
+        echo json_encode($msg);
       }
     } else {
-      redirect('login');
+      $msg['success'] = 'username';
+      echo json_encode($msg);
     }
   }
 
